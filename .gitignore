@@ -1,0 +1,8 @@
+node_modules
+dist
+.DS_Store
+.env
+.env.local
+# Carpeta nativa de Android: se genera con `npx cap add android` en tu PC
+android
+ios

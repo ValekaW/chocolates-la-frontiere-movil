@@ -1,0 +1,14 @@
+{
+  "appId": "com.chocolates.movil",
+  "appName": "Chocolates La Frontera",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": false,
+    "allowNavigation": [
+      "chocolates-la-frontiere.valebarbosa960.workers.dev",
+      "*.paypal.com",
+      "*.paypalobjects.com"
+    ]
+  }
+}
