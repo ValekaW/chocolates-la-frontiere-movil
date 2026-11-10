@@ -8,11 +8,15 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  // Pregunta al servidor quién es el usuario (también sirve para ver si ya confirmó su correo)
+  const refresh = () =>
     api('/auth/me')
       .then((data) => setUser(data.user))
       .catch(() => setUser(null))
       .finally(() => setLoading(false));
+
+  useEffect(() => {
+    refresh();
   }, []);
 
   // Regresan un mensaje de error o null si salió bien
@@ -29,13 +33,23 @@ export function AuthProvider({ children }) {
   const login = (email, password) => authenticate('/auth/login', { email, password });
   const signup = (name, email, password) => authenticate('/auth/register', { name, email, password });
 
+  // Reenvía el correo de confirmación. Regresa un mensaje de error o null si salió bien
+  const resendVerification = async () => {
+    try {
+      await api('/auth/resend-verification', { method: 'POST' });
+      return null;
+    } catch (err) {
+      return err.message;
+    }
+  };
+
   const logout = async () => {
     await api('/auth/logout', { method: 'POST' }).catch(() => {});
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout, refresh, resendVerification }}>
       {children}
     </AuthContext.Provider>
   );

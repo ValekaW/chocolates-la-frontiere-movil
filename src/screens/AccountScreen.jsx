@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../state/AuthContext.jsx';
 import { api } from '../services/api.js';
+import VerifyEmailNotice from '../components/VerifyEmailNotice.jsx';
 import { formatDate, money } from '../utils/format.js';
 
 export default function AccountScreen() {
@@ -15,7 +16,9 @@ export default function AccountScreen() {
       <section className="box">
         <strong>{user.name}</strong>
         <p className="hint">{user.email}</p>
-        {!user.emailVerified && <p className="hint">Tu correo aún no está confirmado.</p>}
+        {!user.emailVerified && (
+          <VerifyEmailNotice />
+        )}
         <button className="btn btn--ghost" onClick={logout}>Cerrar sesión</button>
       </section>
       <OrderList />
