@@ -7,6 +7,8 @@ import { money } from '../utils/format.js';
 import Thumb from '../components/Thumb.jsx';
 import QtyStepper from '../components/QtyStepper.jsx';
 import PayPalButton from '../components/PayPalButton.jsx';
+import VerifyEmailNotice from '../components/VerifyEmailNotice.jsx';
+import { getStock, stockMessage } from '../utils/stock.js';
 
 function SummaryRow({ label, value, strong }) {
   return (
@@ -143,19 +145,28 @@ export default function CartScreen() {
       <h1 className="page-title">Carrito</h1>
 
       <ul className="cart-lines">
-        {items.map(({ product, quantity }) => (
+        {items.map(({ product, quantity }) => {
+          const stock = getStock(product);
+          const warning = stockMessage(stock);
+          return (
           <li key={product.id} className="cart-line">
             <div className="cart-line__thumb"><Thumb product={product} /></div>
             <div className="cart-line__info">
               <strong>{product.name}</strong>
               <span className="price">{money(product.price * quantity)}</span>
               <div className="cart-line__actions">
-                <QtyStepper value={quantity} onChange={(q) => setQuantity(product.id, q)} />
+                <QtyStepper value={quantity} onChange={(q) => setQuantity(product.id, q)} max={stock} />
                 <button className="link-btn" onClick={() => remove(product.id)}>Quitar</button>
               </div>
+              {quantity >= stock ? (
+                <span className="stock-note">Máximo disponible: {stock}</span>
+              ) : (
+                warning && <span className="stock-note">{warning}</span>
+              )}
             </div>
           </li>
-        ))}
+          );
+        })}
       </ul>
 
       <section className="box">
@@ -211,6 +222,8 @@ export default function CartScreen() {
               Iniciar sesión
             </button>
           </>
+        ) : !user.emailVerified ? (
+          <VerifyEmailNotice email={user.email} />
         ) : (
           <PayPalButton
             onValidate={validate}

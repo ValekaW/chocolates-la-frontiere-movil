@@ -6,6 +6,7 @@ import { money } from '../utils/format.js';
 import Thumb from '../components/Thumb.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import QtyStepper from '../components/QtyStepper.jsx';
+import { getStock, stockMessage } from '../utils/stock.js';
 
 export default function ProductScreen() {
   const { db } = useData();
@@ -21,12 +22,16 @@ export default function ProductScreen() {
 
   if (!product) return <p className="status">Este producto ya no está disponible.</p>;
 
+  const stock = getStock(product);
+  const available = Math.max(0, stock - cart.quantityOf(product.id)); // lo que aún cabe en el carrito
+  const shownQuantity = Math.min(quantity, Math.max(1, available));
+  const warning = stockMessage(stock);
+
   const related = db.products.filter((p) => (product.related || []).includes(p.id));
   const stars = '★'.repeat(Math.round(product.rating || 0));
 
   const addToCart = () => {
-    cart.add(product, quantity);
-    setAdded(true);
+    if (cart.add(product, shownQuantity) > 0) setAdded(true);
   };
 
   return (
@@ -44,6 +49,7 @@ export default function ProductScreen() {
           </p>
         )}
         <p className="price price--big">{money(product.price)}</p>
+        {warning && <p className="stock-note" role="status">{warning}</p>}
         <p>{product.description}</p>
         {product.ingredients && (
           <>
@@ -63,9 +69,15 @@ export default function ProductScreen() {
       )}
 
       <div className="bottom-bar">
-        <QtyStepper value={quantity} onChange={setQuantity} />
-        <button className="btn btn--gold btn--grow" onClick={addToCart}>
-          {added ? '✓ Agregado al carrito' : `Agregar · ${money(product.price * quantity)}`}
+        <QtyStepper value={shownQuantity} onChange={setQuantity} max={Math.max(1, available)} />
+        <button className="btn btn--gold btn--grow" onClick={addToCart} disabled={available === 0}>
+          {stock === 0
+            ? 'Agotado'
+            : available === 0
+              ? `Ya tienes las ${stock} disponibles`
+              : added
+                ? '✓ Agregado al carrito'
+                : `Agregar · ${money(product.price * shownQuantity)}`}
         </button>
       </div>
     </div>
