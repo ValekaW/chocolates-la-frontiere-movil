@@ -8,6 +8,7 @@ import react from '@vitejs/plugin-react';
 // Uso: VITE_SITE_URL=http://localhost:5174 npm run dev
 const backend = {
   target: 'http://localhost:5173',
+  changeOrigin: true, // el backend arma los enlaces del correo con este host: debe ser el de la web (5173)
   configure: (proxy) => {
     proxy.on('proxyReq', (proxyReq) => proxyReq.setHeader('origin', 'http://localhost:5173'));
   },

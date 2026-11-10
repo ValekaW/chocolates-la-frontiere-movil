@@ -11,8 +11,8 @@ export function AuthProvider({ children }) {
   // Pregunta al servidor quién es el usuario (también sirve para ver si ya confirmó su correo)
   const refresh = () =>
     api('/auth/me')
-      .then((data) => setUser(data.user))
-      .catch(() => setUser(null))
+      .then((data) => { setUser(data.user); return data.user; })
+      .catch(() => { setUser(null); return null; })
       .finally(() => setLoading(false));
 
   useEffect(() => {
