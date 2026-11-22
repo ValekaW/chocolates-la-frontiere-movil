@@ -31,6 +31,15 @@ export default function HomeScreen() {
         </section>
       )}
 
+      <button className="reco-banner" onClick={() => nav.push('recommendations')}>
+        <span aria-hidden="true">✨</span>
+        <span>
+          <strong>Recomendaciones para ti</strong>
+          <span className="hint">Chocolates elegidos según tus gustos y tus compras</span>
+        </span>
+        <span aria-hidden="true">›</span>
+      </button>
+
       <section className="section">
         <h2>Categorías</h2>
         <div className="hscroll">

@@ -15,6 +15,7 @@ import MoreScreen from './screens/MoreScreen.jsx';
 import HistoryScreen from './screens/HistoryScreen.jsx';
 import RecipesScreen from './screens/RecipesScreen.jsx';
 import ContactScreen from './screens/ContactScreen.jsx';
+import RecommendationsScreen from './screens/RecommendationsScreen.jsx';
 
 const SCREENS = {
   home: HomeScreen,
@@ -26,6 +27,7 @@ const SCREENS = {
   history: HistoryScreen,
   recipes: RecipesScreen,
   contact: ContactScreen,
+  recommendations: RecommendationsScreen,
 };
 
 const TITLES = {
@@ -33,6 +35,7 @@ const TITLES = {
   history: 'Nuestra historia',
   recipes: 'Recetario',
   contact: 'Contacto',
+  recommendations: 'Para ti',
 };
 
 function Shell() {

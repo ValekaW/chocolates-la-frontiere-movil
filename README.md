@@ -12,7 +12,7 @@ Interfaz móvil (React + Vite + Capacitor) de la tienda de chocolate artesanal d
 | Catálogo | Filtro por categoría y ficha de producto | `GET /catalog` |
 | Carrito | Cantidades, código de promoción, código postal, resumen y pago con PayPal | `POST /orders/quote`, `POST /orders`, `POST /orders/:id/capture`, `GET /paypal/config` |
 | Cuenta | Iniciar sesión, crear cuenta, mis pedidos | `POST /auth/login`, `POST /auth/register`, `POST /auth/logout`, `GET /auth/me`, `GET /orders` |
-| Más | Nuestra historia, recetario y contacto (formulario) | `POST /contact` |
+| Más | Para ti (recomendaciones personalizadas), nuestra historia, recetario y contacto (formulario) | `GET /recommendations`, `POST /contact` |
 
 ## Cómo correrla
 
