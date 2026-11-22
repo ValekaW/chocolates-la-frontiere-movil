@@ -7,6 +7,7 @@ import Thumb from '../components/Thumb.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import QtyStepper from '../components/QtyStepper.jsx';
 import { getStock, stockMessage } from '../utils/stock.js';
+import { addViewed } from '../utils/personalization.js';
 
 export default function ProductScreen() {
   const { db } = useData();
@@ -19,6 +20,11 @@ export default function ProductScreen() {
 
   // Al cambiar de producto o de cantidad, se vuelve al estado inicial del botón
   useEffect(() => setAdded(false), [quantity, product?.id]);
+
+  // Se recuerda en el teléfono para las recomendaciones de "Para ti"
+  useEffect(() => {
+    if (product) addViewed(product.id);
+  }, [product?.id]);
 
   if (!product) return <p className="status">Este producto ya no está disponible.</p>;
 

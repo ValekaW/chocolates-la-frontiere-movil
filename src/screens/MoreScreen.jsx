@@ -6,6 +6,7 @@ export default function MoreScreen() {
   const nav = useNav();
 
   const rows = [
+    { name: 'recommendations', icon: '✨', title: 'Para ti', text: 'Recomendaciones según tus gustos' },
     { name: 'history', icon: '📜', title: 'Nuestra historia', text: db.history ? `Desde ${db.history.since}` : '' },
     { name: 'recipes', icon: '🥣', title: 'Recetario', text: `${db.recipes.length} recetas` },
     { name: 'contact', icon: '📍', title: 'Contacto', text: 'WhatsApp, correo y cómo llegar' },
