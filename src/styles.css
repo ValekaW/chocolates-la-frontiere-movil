@@ -58,14 +58,17 @@ h3 { font-size: 1rem; margin: 16px 0 6px; }
   top: 0;
   z-index: 5;
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 14px 16px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
   background: var(--cafe-oscuro);
   color: var(--crema);
-  padding-top: calc(14px + env(safe-area-inset-top));
+  padding-top: calc(10px + env(safe-area-inset-top));
 }
-.brandbar small { opacity: 0.75; font-size: 0.8rem; }
+.brandbar__logo { flex: 0 0 34px; }
+.brandbar__text { display: grid; line-height: 1.15; }
+.brandbar strong { font-family: var(--serif); color: var(--dorado); font-size: 1.05rem; }
+.brandbar small { opacity: 0.75; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
 
 .topbar {
   position: sticky;
@@ -362,6 +365,39 @@ input:focus-visible, textarea:focus-visible, button:focus-visible {
 /* ---------- Cuenta y pedidos ---------- */
 .order { display: grid; gap: 6px; }
 .order__items { padding-left: 18px; font-size: 0.9rem; }
+.order--link { width: 100%; text-align: left; }
+
+/* ---------- Seguimiento de pedidos ---------- */
+.ship-badge {
+  font-size: 0.78rem; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+  background: var(--crema-tarjeta); color: var(--cafe);
+}
+.ship-badge.is-enviado { background: var(--dorado); color: #fff; }
+.ship-badge.is-entregado { background: var(--verde); color: #fff; }
+
+.timeline-steps { list-style: none; display: grid; margin-top: 6px; }
+.timeline-steps li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; position: relative; padding-bottom: 18px; color: #b59b7d; }
+.timeline-steps li:last-child { padding-bottom: 0; }
+/* Línea vertical entre pasos */
+.timeline-steps li:not(:last-child)::before {
+  content: ''; position: absolute; left: 19px; top: 40px; bottom: 0; width: 3px; background: var(--crema-tarjeta);
+}
+.timeline-steps li.is-done:not(:last-child)::before { background: var(--dorado); }
+.timeline-steps__dot {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 1.15rem;
+  background: var(--crema-tarjeta); filter: grayscale(1); opacity: 0.6;
+}
+.timeline-steps li.is-done, .timeline-steps li.is-current { color: var(--cafe-oscuro); }
+.timeline-steps li.is-done .timeline-steps__dot,
+.timeline-steps li.is-current .timeline-steps__dot { background: var(--dorado); filter: none; opacity: 1; }
+.timeline-steps li.is-current .timeline-steps__dot { box-shadow: 0 0 0 5px rgba(212, 145, 58, 0.25); }
+.timeline-steps li > div { padding-top: 8px; display: grid; gap: 2px; }
+.timeline-steps__note { font-size: 0.85rem; background: #fff; border-radius: 8px; padding: 6px 10px; margin-top: 4px; }
+
+.order-lines { list-style: none; display: grid; gap: 8px; font-size: 0.92rem; }
+.order-lines li { display: flex; justify-content: space-between; gap: 12px; }
+.order-lines li > span:last-child { white-space: nowrap; }
+.order-lines__total { font-weight: 700; border-top: 1px solid var(--crema-tarjeta); padding-top: 8px; }
 
 /* ---------- Más, historia, recetas, contacto ---------- */
 .menu-list { list-style: none; display: grid; gap: 10px; margin-top: 12px; }

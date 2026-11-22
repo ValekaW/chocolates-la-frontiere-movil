@@ -150,7 +150,10 @@ export default function CartScreen() {
           <p>Total: <strong>{money(order.total)}</strong></p>
           {order.discount > 0 && <p className="hint">Ahorraste {money(order.discount)} con {order.promoCode}</p>}
           <p className="hint">Pedido #{order.id} · Pagado con PayPal</p>
-          <button className="btn btn--gold btn--block" onClick={() => nav.switchTab('catalog')}>
+          <button className="btn btn--gold btn--block" onClick={() => { nav.switchTab('account'); nav.push('order', { id: order.id }); }}>
+            Seguir mi pedido
+          </button>
+          <button className="btn btn--ghost btn--block" onClick={() => nav.switchTab('catalog')}>
             Seguir comprando
           </button>
         </section>

@@ -10,3 +10,11 @@ export function formatDate(sqlDate) {
     day: 'numeric', month: 'long', year: 'numeric',
   });
 }
+
+// "16 de octubre de 2026, 12:55 p.m."
+export function formatDateTime(sqlDate) {
+  if (!sqlDate) return '';
+  return new Date(`${sqlDate.replace(' ', 'T')}Z`).toLocaleString('es-MX', {
+    day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit',
+  });
+}

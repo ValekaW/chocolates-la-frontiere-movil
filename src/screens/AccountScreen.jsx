@@ -3,6 +3,8 @@ import { useAuth } from '../state/AuthContext.jsx';
 import { api } from '../services/api.js';
 import VerifyEmailNotice from '../components/VerifyEmailNotice.jsx';
 import { formatDate, money } from '../utils/format.js';
+import { useNav } from '../nav.jsx';
+import { shippingLabel } from '../components/OrderTracker.jsx';
 
 export default function AccountScreen() {
   const { user, loading, logout } = useAuth();
@@ -27,6 +29,7 @@ export default function AccountScreen() {
 }
 
 function OrderList() {
+  const nav = useNav();
   const [orders, setOrders] = useState(null);
   const [error, setError] = useState('');
 
@@ -43,7 +46,7 @@ function OrderList() {
       {!orders && !error && <p className="hint">Cargando…</p>}
       {orders && orders.length === 0 && <p className="empty">Aún no tienes pedidos.</p>}
       {orders?.map((o) => (
-        <article key={o.id} className="box order">
+        <button key={o.id} className="box order order--link" onClick={() => nav.push('order', { id: o.id })}>
           <div className="row row--between">
             <strong>Pedido #{o.id}</strong>
             <span>{money(o.total)}</span>
@@ -51,10 +54,16 @@ function OrderList() {
           <p className="hint">{formatDate(o.paidAt ?? o.createdAt)} · C.P. {o.postalCode}</p>
           <ul className="order__items">
             {o.items.map((item) => (
-              <li key={item.product_id ?? item.name}>{item.quantity} × {item.name}</li>
+              <li key={item.productId ?? item.name}>{item.quantity} × {item.name}</li>
             ))}
           </ul>
-        </article>
+          {o.shippingStatus && (
+            <div className="row row--between">
+              <span className={`ship-badge is-${o.shippingStatus}`}>{shippingLabel(o.shippingStatus)}</span>
+              <span className="hint">Ver seguimiento ›</span>
+            </div>
+          )}
+        </button>
       ))}
     </section>
   );

@@ -6,6 +6,7 @@ import { AuthProvider } from './state/AuthContext.jsx';
 import { CartProvider } from './state/CartContext.jsx';
 import TabBar from './components/TabBar.jsx';
 import TopBar from './components/TopBar.jsx';
+import logoMark from './assets/logo-mark.svg';
 import HomeScreen from './screens/HomeScreen.jsx';
 import CatalogScreen from './screens/CatalogScreen.jsx';
 import ProductScreen from './screens/ProductScreen.jsx';
@@ -16,6 +17,7 @@ import HistoryScreen from './screens/HistoryScreen.jsx';
 import RecipesScreen from './screens/RecipesScreen.jsx';
 import ContactScreen from './screens/ContactScreen.jsx';
 import RecommendationsScreen from './screens/RecommendationsScreen.jsx';
+import OrderScreen from './screens/OrderScreen.jsx';
 
 const SCREENS = {
   home: HomeScreen,
@@ -28,6 +30,7 @@ const SCREENS = {
   recipes: RecipesScreen,
   contact: ContactScreen,
   recommendations: RecommendationsScreen,
+  order: OrderScreen,
 };
 
 const TITLES = {
@@ -36,6 +39,7 @@ const TITLES = {
   recipes: 'Recetario',
   contact: 'Contacto',
   recommendations: 'Para ti',
+  order: 'Seguimiento',
 };
 
 function Shell() {
@@ -62,8 +66,11 @@ function Shell() {
         <TopBar title={TITLES[nav.current.name] ?? ''} onBack={nav.back} />
       ) : (
         <header className="brandbar">
-          <strong>{db.site.brand}</strong>
-          <small>{db.site.tagline}</small>
+          <img src={logoMark} alt="" className="brandbar__logo" width="34" height="34" />
+          <span className="brandbar__text">
+            <strong>{db.site.brand}</strong>
+            <small>{db.site.tagline}</small>
+          </span>
         </header>
       )}
 
