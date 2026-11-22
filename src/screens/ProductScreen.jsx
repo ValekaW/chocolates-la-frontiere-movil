@@ -10,7 +10,7 @@ import { getStock, stockMessage } from '../utils/stock.js';
 import { addViewed } from '../utils/personalization.js';
 
 export default function ProductScreen() {
-  const { db } = useData();
+  const { db, refresh } = useData();
   const { current } = useNav();
   const cart = useCart();
   const [quantity, setQuantity] = useState(1);
@@ -20,6 +20,11 @@ export default function ProductScreen() {
 
   // Al cambiar de producto o de cantidad, se vuelve al estado inicial del botón
   useEffect(() => setAdded(false), [quantity, product?.id]);
+
+  // Existencias al día al abrir la ficha
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   // Se recuerda en el teléfono para las recomendaciones de "Para ti"
   useEffect(() => {

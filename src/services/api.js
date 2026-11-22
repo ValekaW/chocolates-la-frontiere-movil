@@ -27,8 +27,10 @@ export async function api(path, { method = 'GET', body } = {}) {
 
 let catalogPromise = null;
 
-// El catálogo se pide una vez por sesión de la app
-export function getCatalog() {
+// El catálogo se guarda para no pedirlo en cada pantalla. Con { fresh: true } se vuelve a pedir
+// (las existencias cambian cuando alguien compra, así que hay que actualizarlas seguido).
+export function getCatalog({ fresh = false } = {}) {
+  if (fresh) catalogPromise = null;
   if (!catalogPromise) {
     catalogPromise = api('/catalog').catch((err) => {
       catalogPromise = null; // permite reintentar

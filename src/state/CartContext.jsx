@@ -25,6 +25,21 @@ export function CartProvider({ products, children }) {
     }
   }, [lines]);
 
+  // Si las existencias bajaron, el carrito guardado también se ajusta (y se quita lo agotado),
+  // para que no vuelva a aparecer la cantidad vieja si después llega más stock
+  useEffect(() => {
+    setLines((prev) => {
+      const next = prev
+        .map((l) => {
+          const product = products.find((p) => p.id === l.productId);
+          return product ? { ...l, quantity: Math.min(l.quantity, getStock(product)) } : l;
+        })
+        .filter((l) => l.quantity > 0);
+      const changed = next.length !== prev.length || next.some((l, i) => l.quantity !== prev[i].quantity);
+      return changed ? next : prev;
+    });
+  }, [products]);
+
   const value = useMemo(() => {
     const items = lines
       .map((line) => {
