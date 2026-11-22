@@ -10,7 +10,8 @@
     "cap:add": "npx cap add android",
     "cap:sync": "npm run build && npx cap sync android",
     "cap:open": "npx cap open android",
-    "cap:assets": "capacitor-assets generate --android --iconBackgroundColor \"#3b2219\" --splashBackgroundColor \"#3b2219\""
+    "cap:assets": "capacitor-assets generate --android --iconBackgroundColor \"#3b2219\" --splashBackgroundColor \"#3b2219\"",
+    "android": "node scripts/android.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.0",

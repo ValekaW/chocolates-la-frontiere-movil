@@ -34,6 +34,9 @@ La carpeta `android/` se genera en tu PC (no se sube a git):
 ```bash
 npm install
 npx cap add android         # solo la primera vez
+npm run android             # todo en uno: crea android/ si falta, compila, genera el ícono y abre Android Studio
+
+# o paso por paso:
 npm run cap:sync            # compila la interfaz y la copia al proyecto Android
 npm run cap:assets          # genera el ícono y la pantalla de inicio con el logotipo (carpeta assets/)
 npm run cap:open            # abre Android Studio
