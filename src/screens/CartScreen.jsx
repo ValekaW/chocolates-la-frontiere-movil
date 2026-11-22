@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNav } from '../nav.jsx';
 import { useCart } from '../state/CartContext.jsx';
+import { useData } from '../state/DataContext.jsx';
 import { useAuth } from '../state/AuthContext.jsx';
 import { api } from '../services/api.js';
 import { money } from '../utils/format.js';
@@ -23,6 +24,20 @@ export default function CartScreen() {
   const { items, subtotal, setQuantity, remove, clear } = useCart();
   const { user, loading: authLoading } = useAuth();
   const nav = useNav();
+  const { refresh } = useData();
+  const stockErrorRef = useRef(false); // el error que se muestra es de existencias
+
+  // El servidor dijo que no alcanzan las piezas: se actualiza el catálogo y el carrito se ajusta solo
+  const showStockError = (err) => {
+    setFormError(err.message);
+    stockErrorRef.current = true;
+    refresh();
+  };
+
+  // Existencias al día al abrir el carrito
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
 
   const [postalCode, setPostalCode] = useState('');
   const [promoInput, setPromoInput] = useState('');
@@ -45,10 +60,20 @@ export default function CartScreen() {
     }
     let cancelled = false;
     api('/orders/quote', { method: 'POST', body: { items: cartLines, promoCode } })
-      .then((q) => { if (!cancelled) setQuote(q); })
+      .then((q) => {
+        if (cancelled) return;
+        setQuote(q);
+        if (stockErrorRef.current) {
+          stockErrorRef.current = false;
+          setFormError('');
+        }
+      })
       .catch((err) => {
         if (cancelled) return;
-        if (err.field === 'promoCode') {
+        if (err.field === 'stock') {
+          setQuote(null);
+          showStockError(err);
+        } else if (err.field === 'promoCode') {
           setPromoError(err.message);
           setPromoCode(null);
         } else {
@@ -89,7 +114,8 @@ export default function CartScreen() {
       orderIdRef.current = data.orderId;
       return data.paypalOrderId;
     } catch (err) {
-      setFormError(err.message);
+      if (err.field === 'stock') showStockError(err);
+      else setFormError(err.message);
       throw err;
     }
   };
@@ -99,8 +125,10 @@ export default function CartScreen() {
       const data = await api(`/orders/${orderIdRef.current}/capture`, { method: 'POST' });
       setOrder({ ...data.order, payerName: data.payerName });
       clear();
+      refresh(); // ya se descontaron las piezas compradas
     } catch (err) {
-      setFormError(err.message);
+      if (err.field === 'stock') showStockError(err);
+      else setFormError(err.message);
       if (err.field === 'promoCode') removePromo();
     }
   };
