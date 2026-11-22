@@ -11,7 +11,7 @@ Interfaz móvil (React + Vite + Capacitor) de la tienda de chocolate artesanal d
 | Inicio | Hero, promociones, categorías, más vendidos | `GET /catalog` |
 | Catálogo | Filtro por categoría y ficha de producto | `GET /catalog` |
 | Carrito | Cantidades, código de promoción, código postal, resumen y pago con PayPal | `POST /orders/quote`, `POST /orders`, `POST /orders/:id/capture`, `GET /paypal/config` |
-| Cuenta | Iniciar sesión, crear cuenta, mis pedidos | `POST /auth/login`, `POST /auth/register`, `POST /auth/logout`, `GET /auth/me`, `GET /orders` |
+| Cuenta | Iniciar sesión, crear cuenta, mis pedidos con seguimiento del envío (recibido → en preparación → en camino → entregado) | `POST /auth/login`, `POST /auth/register`, `POST /auth/logout`, `GET /auth/me`, `GET /orders` |
 | Más | Para ti (recomendaciones personalizadas), nuestra historia, recetario y contacto (formulario) | `GET /recommendations`, `POST /contact` |
 
 ## Cómo correrla
@@ -35,8 +35,11 @@ La carpeta `android/` se genera en tu PC (no se sube a git):
 npm install
 npx cap add android         # solo la primera vez
 npm run cap:sync            # compila la interfaz y la copia al proyecto Android
+npm run cap:assets          # genera el ícono y la pantalla de inicio con el logotipo (carpeta assets/)
 npm run cap:open            # abre Android Studio
 ```
+
+APK de prueba sin abrir Android Studio: `cd android` y luego `gradlew assembleDebug` (Windows) o `./gradlew assembleDebug`. Queda en `android/app/build/outputs/apk/debug/app-debug.apk`.
 
 ## Pendiente antes de que el inicio de sesión y los pagos funcionen en el celular
 
